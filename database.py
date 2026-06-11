@@ -9,7 +9,7 @@ connect_args={"check_same_thread": False}
 engine= create_engine(sqlite_url, connect_args=connect_args)# tlanslates python commands to SQL
 
 def create_db_and_tables():
-    SQLModel.metadat.create_all(engine)
+    SQLModel.metadata.create_all(engine)
 
 def get_session():
     with Session(engine) as session:
