@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
-from sqlmodel import Session
+from sqlmodel import Session, select
+from sqlalchemy import func
 from pydantic import BaseModel
 
 from database import create_db_and_tables, get_session
@@ -47,3 +48,24 @@ def submit_code(payload: Payload, session: Session=Depends(get_session)):
     session.refresh(submission)
 
     return submission
+
+@app.get("/leaderboard/")
+def get_leaderboard(session: Session = Depends(get_session)):
+    statement=(
+        select(Submission.user_id, func.sum(Challenge.points).label("totoal_points"))
+        . join(Challenge, Submission.challenge_id == Challenge.id)
+        .where(Submission.is_correct == True)
+        .group_by(Submission.user_id)
+        .order_by(func.sum(Challenge.points).desc())
+    )
+    result = session.exec(statement).all()
+
+    leaderboard=[]
+    for rank, row in enumerate(result, start=1):
+        leaderboard.append({
+            "rank":rank,
+            "user_id": row[0],
+            "total_points": row[1]
+        })
+    
+    return leaderboard
