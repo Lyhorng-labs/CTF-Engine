@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTF Engine // Secure Coding Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="scanlines" aria-hidden="true"></div>
+    <div class="glow-orb glow-orb--a" aria-hidden="true"></div>
+    <div class="glow-orb glow-orb--b" aria-hidden="true"></div>
+
+    <main class="container">
+        <header class="hud">
+            <div class="hud__brand">
+                <span class="hud__logo">&gt;_</span>
+                <div>
+                    <h1 class="hud__title" data-text="CTF ENGINE">CTF ENGINE</h1>
+                    <p class="hud__subtitle">SECURE&nbsp;CODING&nbsp;LAB</p>
+                </div>
+            </div>
+            <div class="hud__status">
+                <span class="dot"></span>
+                <span>SANDBOX&nbsp;ONLINE</span>
+            </div>
+        </header>
+
+        <div class="grid2">
+            <div class="field">
+                <label for="userId">PLAYER&nbsp;ID</label>
+                <input type="number" id="userId" value="1" min="1">
+            </div>
+            <div class="field">
+                <label for="challengeId">CHALLENGE&nbsp;ID</label>
+                <input type="number" id="challengeId" value="1" min="1">
+            </div>
+        </div>
+
+        <div class="field">
+            <label for="code">YOUR&nbsp;PYTHON&nbsp;EXPLOIT</label>
+            <div class="editor">
+                <div class="editor__bar">
+                    <span class="editor__btn"></span>
+                    <span class="editor__btn"></span>
+                    <span class="editor__btn"></span>
+                    <span class="editor__name">exploit.py</span>
+                </div>
+                <textarea id="code" spellcheck="false" placeholder="import math&#10;print('Hello, operator.')"></textarea>
+            </div>
+        </div>
+
+        <button id="runBtn" onclick="submitCode()">
+            <span class="btn__label">EXECUTE&nbsp;PAYLOAD</span>
+            <span class="btn__arrow">⏎</span>
+        </button>
+
+        <section id="resultContainer" class="result" style="display:none;">
+            <div class="result__head">
+                <span>ENGINE&nbsp;OUTPUT</span>
+                <span class="result__blink">●&nbsp;LIVE</span>
+            </div>
+            <div id="output" class="output-box"></div>
+        </section>
+    </main>
+
+    <script src="index.js"></script>
+</body>
+</html>

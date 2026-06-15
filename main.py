@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
 from sqlalchemy import func
 from pydantic import BaseModel
@@ -8,6 +9,14 @@ from models import Challenge, Submission
 from sandbox import execute_in_sandbox
 
 app = FastAPI(title="CTF Secure Coding Engine")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup") #it talk to databse before FastAPI starts accepting 
 def on_startup():

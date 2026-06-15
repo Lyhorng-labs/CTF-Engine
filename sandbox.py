@@ -1,6 +1,8 @@
 import ast
 import subprocess
 
+ALLOWED_IMPORTS={'math', 'hashlib', 'datetime', 'json', 'random'}
+
 def validate_code(code_string: str) -> bool:# return type is boolean
     #analysis to prevent basic malicious payloads
     try:
@@ -11,7 +13,14 @@ def validate_code(code_string: str) -> bool:# return type is boolean
     for node in ast.walk(tree):
         #block all import statements
         if isinstance(node, (ast.Import, ast.ImportFrom)):
-            raise ValueError("Security violation: Imports are strickly forbiden.")
+            for alias in node.names:
+                if alias.name not in ALLOWED_IMPORTS:
+                    raise ValueError("Security violation: Imports are strickly forbiden.")
+        
+        #check from imports
+        if isinstance(node, ast.ImportFrom):
+            if node.module not in ALLOWED_IMPORTS:
+                raise ValueError(f"Security Violation: Import from '{node.module}' is forbidden.")
         
         #block dangerous built-in function calls
         if isinstance(node, ast.Name) and node.id in ['__import__', 'eval', 'exec','open' ]:
